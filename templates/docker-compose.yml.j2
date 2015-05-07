@@ -1,0 +1,24 @@
+elasticsearch:
+  image: mkuzmin/elasticsearch
+  volumes:
+    - "{{ directory }}/config/elasticsearch/:/opt/elasticsearch/config/:ro"
+    - "{{ directory }}/data/:/opt/elasticsearch/data/"
+logstash:
+  image: mkuzmin/logstash
+  volumes:
+    - "{{ directory }}/config/logstash/:/opt/logstash/config/:ro"
+    - "{{ directory }}/config/logstash.key:/opt/logstash/logstash.key:ro"
+    - "{{ directory }}/config/logstash.crt:/opt/logstash/logstash.crt:ro"
+  links:
+    - "elasticsearch"
+  command: -f /opt/logstash/config/
+  ports:
+    - "5043:5043"
+kibana:
+  image: mkuzmin/kibana
+  volumes:
+    - "{{ directory }}/config/kibana/:/opt/kibana/config/:ro"
+  links:
+  - "elasticsearch"
+  ports:
+  - "5601:5601"

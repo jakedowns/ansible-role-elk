@@ -1,0 +1,28 @@
+---
+- include: init.yml
+- name: Create directory
+  file: path={{ directory }} state=directory
+- name: Copy ElasticSearch configuration
+  copy: src=elasticsearch dest={{ directory }}/config/
+  notify: Restart service
+- name: Copy Logstash configuration
+  copy: src={{ logstash_configs }}/ dest={{ directory }}/config/logstash/
+  notify: Restart service
+- name: Copy Logstash SSL key
+  copy: src=logstash.key dest={{ directory }}/config/
+  notify: Restart service
+- name: Copy Logstash SSL certificate
+  copy: src=logstash.crt dest={{ directory }}/config/
+  notify: Restart service
+- name: Create Kibana configuration directory
+  file: path={{ directory }}/config/kibana state=directory
+- name: Copy Kibana configuration
+  template: src=kibana.yml.j2 dest={{ directory }}/config/kibana/kibana.yml
+  notify: Restart service
+- name: Copy Docker-compose configuration
+  template: src=docker-compose.yml.j2 dest={{ directory }}/docker-compose.yml
+  notify: Restart service
+- name: Register service
+  template: src=elk.upstart.conf.j2 dest=/etc/init/elk.conf
+  notify: Restart service
+- service: name=elk state=started enabled=yes
