@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Michael Kuzmin
+  description: Logstash, ElasticSearch, and Kibana
+  company: JetBrains
+  license: Apache license 2.0
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+  categories:
+    - monitoring
