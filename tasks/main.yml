@@ -1,28 +1,56 @@
 ---
 - include: init.yml
+
 - name: Create directory
   file: path={{ directory }} state=directory
-- name: Copy ElasticSearch configuration
+
+- name: Copy Elasticsearch configuration
   copy: src=elasticsearch dest={{ directory }}/config/
-  notify: Restart service
+- name: Start Elasticsearch docker container
+  docker:
+    name: elasticsearch
+    image: mkuzmin/elasticsearch
+    volumes:
+      - "{{ directory }}/config/elasticsearch/:/opt/elasticsearch/config/:ro"
+      - "{{ directory }}/data/:/opt/elasticsearch/data/"
+    state: started
+    restart_policy: always
+
 - name: Copy Logstash configuration
   copy: src={{ logstash_configs }}/ dest={{ directory }}/config/logstash/
-  notify: Restart service
 - name: Copy Logstash SSL key
   copy: src=logstash.key dest={{ directory }}/config/
-  notify: Restart service
 - name: Copy Logstash SSL certificate
   copy: src=logstash.crt dest={{ directory }}/config/
-  notify: Restart service
+- name: Start Logstash docker container
+  docker:
+    name: logstash
+    image: mkuzmin/logstash
+    volumes:
+      - "{{ directory }}/config/logstash/:/opt/logstash/config/:ro"
+      - "{{ directory }}/config/logstash.key:/opt/logstash/logstash.key:ro"
+      - "{{ directory }}/config/logstash.crt:/opt/logstash/logstash.crt:ro"
+    links:
+      - "elasticsearch"
+    command: -f /opt/logstash/config/
+    ports:
+      - "5043:5043"
+    state: started
+    restart_policy: always
+
 - name: Create Kibana configuration directory
   file: path={{ directory }}/config/kibana state=directory
 - name: Copy Kibana configuration
   template: src=kibana.yml.j2 dest={{ directory }}/config/kibana/kibana.yml
-  notify: Restart service
-- name: Copy Docker-compose configuration
-  template: src=docker-compose.yml.j2 dest={{ directory }}/docker-compose.yml
-  notify: Restart service
-- name: Register service
-  template: src=elk.upstart.conf.j2 dest=/etc/init/elk.conf
-  notify: Restart service
-- service: name=elk state=started enabled=yes
+- name: Start Logstash docker container
+  docker:
+    name: kibana
+    image: mkuzmin/kibana
+    volumes:
+      - "{{ directory }}/config/kibana/:/opt/kibana/config/:ro"
+    links:
+      - "elasticsearch"
+    ports:
+      - "5601:5601"
+    state: started
+    restart_policy: always

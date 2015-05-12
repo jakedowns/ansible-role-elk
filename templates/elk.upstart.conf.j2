@@ -1,8 +1,0 @@
-description "ELK stack"
-start on started docker
-stop on runlevel [!2345]
-respawn
-script
-    cd {{ directory }}
-    docker-compose up
-end script
