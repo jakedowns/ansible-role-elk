@@ -1,5 +1,6 @@
 ---
-- assert:
+- name: Validate mandatory parameters
+  assert:
     that:
     - logstash_configs != ''
     - certificate != ''
