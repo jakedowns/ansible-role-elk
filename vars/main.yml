@@ -1,2 +1,3 @@
 ---
 directory: /opt/elk
+port: 5601
