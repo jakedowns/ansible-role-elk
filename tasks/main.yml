@@ -51,6 +51,6 @@
     links:
       - "elasticsearch"
     ports:
-      - "5601:5601"
+      - "{{ port }}:5601"
     state: started
     restart_policy: always
