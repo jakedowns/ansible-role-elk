@@ -42,7 +42,7 @@
   file: path={{ directory }}/config/kibana state=directory
 - name: Copy Kibana configuration
   template: src=kibana.yml.j2 dest={{ directory }}/config/kibana/kibana.yml
-- name: Start Logstash docker container
+- name: Start Kibana docker container
   docker:
     name: kibana
     image: mkuzmin/kibana
