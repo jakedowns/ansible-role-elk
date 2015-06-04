@@ -1,3 +1,4 @@
 ---
 directory: /opt/elk
 port: 5601
+default_page: discover
