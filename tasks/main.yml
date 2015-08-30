@@ -45,12 +45,13 @@
 - name: Start Kibana docker container
   docker:
     name: kibana
-    image: mkuzmin/kibana
+    image: kibana:{{ kibana_version }}
+    pull: always
     volumes:
-      - "{{ directory }}/config/kibana/:/opt/kibana/config/:ro"
+      - "{{ directory }}/config/kibana/:/opt/kibana/config/"
     links:
       - "elasticsearch"
     ports:
-      - "{{ port }}:5601"
+      - "{{ kibana_port }}:5601"
     state: started
     restart_policy: always
