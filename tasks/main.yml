@@ -4,15 +4,13 @@
 - name: Create directory
   file: path={{ directory }} state=directory
 
-- name: Copy Elasticsearch configuration
-  copy: src=elasticsearch dest={{ directory }}/config/
 - name: Start Elasticsearch docker container
   docker:
     name: elasticsearch
-    image: mkuzmin/elasticsearch
+    image: elasticsearch:{{ elasticsearch_version }}
+    pull: always
     volumes:
-      - "{{ directory }}/config/elasticsearch/:/opt/elasticsearch/config/:ro"
-      - "{{ directory }}/data/:/opt/elasticsearch/data/"
+      - "{{ directory }}/data/:/usr/share/elasticsearch/data/"
     state: started
     restart_policy: always
 
