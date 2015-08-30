@@ -27,7 +27,7 @@
       - "elasticsearch"
     command: -f /opt/logstash/config/
     expose:
-      - {{ logstash_port }}
+      - "{{ logstash_port }}"
     ports:
       - "{{ logstash_port }}:{{ logstash_port }}"
     state: started
@@ -36,7 +36,7 @@
 - name: Create Kibana configuration directory
   file: path={{ directory }}/config/kibana state=directory
 - name: Copy Kibana configuration
-  template: src=kibana.yml.j2 dest={{ directory }}/config/kibana/kibana.yml
+  template: src=kibana.yml dest={{ directory }}/config/kibana/
 - name: Start Kibana docker container
   docker:
     name: kibana
