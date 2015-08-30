@@ -16,23 +16,20 @@
 
 - name: Copy Logstash configuration
   copy: src={{ logstash_configs }}/ dest={{ directory }}/config/logstash/
-- name: Copy Logstash SSL key
-  copy: src={{ key }} dest={{ directory }}/config/logstash.key
-- name: Copy Logstash SSL certificate
-  copy: src={{ certificate }} dest={{ directory }}/config/logstash.crt
 - name: Start Logstash docker container
   docker:
     name: logstash
     image: mkuzmin/logstash
+    pull: always
     volumes:
       - "{{ directory }}/config/logstash/:/opt/logstash/config/:ro"
-      - "{{ directory }}/config/logstash.key:/opt/logstash/logstash.key:ro"
-      - "{{ directory }}/config/logstash.crt:/opt/logstash/logstash.crt:ro"
     links:
       - "elasticsearch"
     command: -f /opt/logstash/config/
+    expose:
+      - {{ logstash_port }}
     ports:
-      - "5043:5043"
+      - "{{ logstash_port }}:{{ logstash_port }}"
     state: started
     restart_policy: always
 

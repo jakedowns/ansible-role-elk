@@ -3,5 +3,3 @@
   assert:
     that:
     - logstash_configs != ''
-    - certificate != ''
-    - key != ''
