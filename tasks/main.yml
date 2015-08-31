@@ -25,7 +25,7 @@
       - "{{ directory }}/config/logstash/:/opt/logstash/config/:ro"
     links:
       - "elasticsearch"
-    command: -f /opt/logstash/config/
+    command: -f /opt/logstash/config/config/
     expose:
       - "{{ logstash_port }}"
     ports:
