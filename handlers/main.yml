@@ -1,0 +1,16 @@
+---
+- name: Restart Logstash
+  docker:
+    name: logstash
+    image: mkuzmin/logstash
+    volumes:
+      - "{{ directory }}/config/logstash/:/opt/logstash/config/:ro"
+    links:
+      - "elasticsearch"
+    command: -f /opt/logstash/config/config/
+    expose:
+      - "{{ logstash_port }}"
+    ports:
+      - "{{ logstash_port }}:{{ logstash_port }}"
+    state: reloaded
+    restart_policy: always

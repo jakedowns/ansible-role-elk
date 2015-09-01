@@ -15,6 +15,7 @@
 
 - name: Copy Logstash configuration
   copy: src={{ logstash_configs }}/ dest={{ directory }}/config/logstash/
+  notify: Restart Logstash
 - name: Start Logstash docker container
   docker:
     name: logstash
