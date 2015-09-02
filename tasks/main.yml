@@ -10,6 +10,8 @@
     image: elasticsearch:{{ elasticsearch_version }}
     volumes:
       - "{{ directory }}/data/:/usr/share/elasticsearch/data/"
+    ports:
+      - "{{ elasticsearch_port }}:9200"
     state: started
     restart_policy: always
 

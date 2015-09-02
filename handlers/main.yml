@@ -12,5 +12,5 @@
       - "{{ logstash_port }}"
     ports:
       - "{{ logstash_port }}:{{ logstash_port }}"
-    state: reloaded
+    state: restarted
     restart_policy: always

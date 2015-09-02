@@ -1,8 +1,13 @@
 ---
 elasticsearch_version: 1.7
 kibana_version: 4.1
+
 directory: /opt/elk
+
 logstash_port: 5045
+elasticsearch_port: 9200
 kibana_port: 5601
+
 default_page: discover
+
 kibana_elasticsearch_url: http://elasticsearch:9200
