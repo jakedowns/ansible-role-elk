@@ -4,11 +4,16 @@
 - name: Create directory
   file: path={{ directory }} state=directory
 
+- name: Copy Elasticsearch configuration
+  file: path={{ directory }}/config/elasticsearch/ state=directory
+- template: src=elasticsearch.yml dest={{ directory }}/config/elasticsearch/
+- copy: src=logging.yml dest={{ directory }}/config/elasticsearch/
 - name: Start Elasticsearch docker container
   docker:
     name: elasticsearch
     image: elasticsearch:{{ elasticsearch_version }}
     volumes:
+      - "{{ directory }}/config/elasticsearch/:/usr/share/elasticsearch/config/:ro"
       - "{{ directory }}/data/:/usr/share/elasticsearch/data/"
     ports:
       - "{{ elasticsearch_port }}:9200"
@@ -34,10 +39,9 @@
     state: started
     restart_policy: always
 
-- name: Create Kibana configuration directory
-  file: path={{ directory }}/config/kibana state=directory
 - name: Copy Kibana configuration
-  template: src=kibana.yml dest={{ directory }}/config/kibana/
+  file: path={{ directory }}/config/kibana state=directory
+- template: src=kibana.yml dest={{ directory }}/config/kibana/
 - name: Start Kibana docker container
   docker:
     name: kibana
