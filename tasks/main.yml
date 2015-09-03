@@ -7,7 +7,9 @@
 - name: Copy Elasticsearch configuration
   file: path={{ directory }}/config/elasticsearch/ state=directory
 - template: src=elasticsearch.yml dest={{ directory }}/config/elasticsearch/
+  notify: Restart Elasticsearch
 - copy: src=logging.yml dest={{ directory }}/config/elasticsearch/
+  notify: Restart Elasticsearch
 - name: Start Elasticsearch docker container
   docker:
     name: elasticsearch

@@ -1,4 +1,16 @@
 ---
+- name: Restart Elasticsearch
+  docker:
+    name: elasticsearch
+    image: elasticsearch:{{ elasticsearch_version }}
+    volumes:
+      - "{{ directory }}/config/elasticsearch/:/usr/share/elasticsearch/config/:ro"
+      - "{{ directory }}/data/:/usr/share/elasticsearch/data/"
+    ports:
+      - "{{ elasticsearch_port }}:9200"
+    state: restarted
+    restart_policy: always
+
 - name: Restart Logstash
   docker:
     name: logstash
