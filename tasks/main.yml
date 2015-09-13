@@ -3,13 +3,11 @@
 
 - name: Create directory
   file: path={{ directory }} state=directory
-- name: Copy Docker-compose configuration
-  template: src=docker-compose.yml dest={{ directory }}/
 
 - name: Copy Elasticsearch configuration
   file: path={{ directory }}/config/elasticsearch/ state=directory
 - template: src=elasticsearch.yml dest={{ directory }}/config/elasticsearch/
-  notify: Restart Elasticsearch
+#  notify: Restart Elasticsearch
 - copy: src=logging.yml dest={{ directory }}/config/elasticsearch/
 #  notify: Restart Elasticsearch
 
@@ -23,3 +21,8 @@
 #  notify: Restart Kibana
 
 #Start compose
+- name: Copy Docker-compose configuration
+  template: src=docker-compose.yml dest={{ directory }}/
+- command: docker-compose up -d
+  args:
+    chdir: "{{ directory }}"
