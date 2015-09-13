@@ -1,28 +1,28 @@
 ---
-- name: Restart Elasticsearch
-  docker:
-    name: elasticsearch
-    image: elasticsearch:{{ elasticsearch_version }}
-    volumes:
-      - "{{ directory }}/config/elasticsearch/:/usr/share/elasticsearch/config/:ro"
-      - "{{ directory }}/data/:/usr/share/elasticsearch/data/"
-    ports:
-      - "{{ elasticsearch_port }}:9200"
-    state: restarted
-    restart_policy: always
+#- name: Restart Elasticsearch
+#  docker:
+#    name: elasticsearch
+#    image: elasticsearch:{{ elasticsearch_version }}
+#    volumes:
+#      - "{{ directory }}/config/elasticsearch/:/usr/share/elasticsearch/config/:ro"
+#      - "{{ directory }}/data/:/usr/share/elasticsearch/data/"
+#    ports:
+#      - "{{ elasticsearch_port }}:9200"
+#    state: restarted
+#    restart_policy: always
 
-- name: Restart Logstash
-  docker:
-    name: logstash
-    image: mkuzmin/logstash
-    volumes:
-      - "{{ directory }}/config/logstash/:/opt/logstash/config/:ro"
-    links:
-      - "elasticsearch"
-    command: -f /opt/logstash/config/config/
-    expose:
-      - "{{ logstash_port }}"
-    ports:
-      - "{{ logstash_port }}:{{ logstash_port }}"
-    state: restarted
-    restart_policy: always
+#- name: Restart Logstash
+#  docker:
+#    name: logstash
+#    image: mkuzmin/logstash
+#    volumes:
+#      - "{{ directory }}/config/logstash/:/opt/logstash/config/:ro"
+#    links:
+#      - "elasticsearch"
+#    command: -f /opt/logstash/config/config/
+#    expose:
+#      - "{{ logstash_port }}"
+#    ports:
+#      - "{{ logstash_port }}:{{ logstash_port }}"
+#    state: restarted
+#    restart_policy: always
