@@ -1,0 +1,31 @@
+elasticsearch:
+  image: elasticsearch:{{ elasticsearch_version }}
+  volumes:
+    - ./config/elasticsearch/:/usr/share/elasticsearch/config/:ro
+    - ./data/:/usr/share/elasticsearch/data/
+  ports:
+    - {{ elasticsearch_port }}:9200
+  restart: on-failure
+
+logstash:
+  image: mkuzmin/logstash
+  volumes:
+    - ./config/logstash/:/opt/logstash/config/:ro
+  links:
+    - elasticsearch
+  command: -f /opt/logstash/config/config/
+  expose:
+    - {{ logstash_port }}
+  ports:
+    - {{ logstash_port }}:{{ logstash_port }}
+  restart: on-failure
+
+kibana:
+  image: kibana:{{ kibana_version }}
+  volumes:
+    - ./config/kibana/:/opt/kibana/config/
+  links:
+    - elasticsearch
+  ports:
+    - {{ kibana_port }}:5601
+  restart: on-failure
