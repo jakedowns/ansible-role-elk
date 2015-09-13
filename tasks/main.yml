@@ -23,6 +23,6 @@
 #Start compose
 - name: Copy Docker-compose configuration
   template: src=docker-compose.yml dest={{ directory }}/
-- command: docker-compose up -d
+- command: docker-compose up --force-recreate -d
   args:
     chdir: "{{ directory }}"
