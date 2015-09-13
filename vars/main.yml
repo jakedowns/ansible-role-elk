@@ -2,7 +2,8 @@
 directory: /opt/elk
 
 # logstash_configs=
-logstash_port: 5045
+logstash_ports:
+  - 5045
 
 elasticsearch_version: 1.7
 #elasticsearch_config: {

@@ -15,9 +15,13 @@ logstash:
     - elasticsearch
   command: -f /opt/logstash/config/config/
   expose:
-    - {{ logstash_port }}
+{% for port in logstash_ports %}
+    - {{ port }}
+{% endfor %}
   ports:
-    - {{ logstash_port }}:{{ logstash_port }}
+{% for port in logstash_ports %}
+    - {{ port }}:{{ port }}
+{% endfor %}
   restart: on-failure
 
 kibana:
