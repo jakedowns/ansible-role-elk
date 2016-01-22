@@ -3,7 +3,7 @@
   assert:
     that:
     - logstash_configs != ''
-- stat: path={{ logstash_configs }}/config
+- stat: path={{ logstash_configs }}
   delegate_to: 127.0.0.1
   register: p
 - name: Validate config subdirectory
